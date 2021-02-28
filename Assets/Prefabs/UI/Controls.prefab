@@ -91,6 +91,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -209,14 +210,14 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'WASD - MOVMENT
+  m_text: 'WASD - MOVEMENT
 
     SPACE - JUMP
 
     MOSUE - LOOK AROUND
 
-    1-5 : CHANGE
-    COLOR MODE
+    1-5 :
+    CHANGE COLOR MODE
 
     E - PICKUP & DROP
 
