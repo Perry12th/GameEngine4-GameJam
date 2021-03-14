@@ -70,9 +70,10 @@ public class PickupController : MonoBehaviour
 
     void PickupObject (GameObject pickObj)
     {
-        if(pickObj.GetComponent<Rigidbody>())
+        ColorMatrixController martixObject = pickObj.GetComponent<ColorMatrixController>();
+        if (martixObject && martixObject.getState() != ColorState.HOVER)
         {
-            Rigidbody objRig = pickObj.GetComponent<Rigidbody>();
+            Rigidbody objRig = martixObject.GetComponent<Rigidbody>();
             objRig.useGravity = false;
             objRig.drag = 10;
             objRig.freezeRotation = true;

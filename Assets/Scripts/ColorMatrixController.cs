@@ -11,10 +11,13 @@ public enum ColorState
     THUNDER
 }
 
+[RequireComponent(typeof(Rigidbody))]
 public class ColorMatrixController : MonoBehaviour
 {
     [Header("Components")]
     Rigidbody rigidBody;
+    [SerializeField]
+    ParticleSystem effects;
 
     [Header("MartixStats")]
     [SerializeField]
@@ -39,8 +42,7 @@ public class ColorMatrixController : MonoBehaviour
     bool isChanging;
     [SerializeField]
     ColorState state = ColorState.NATURAL;
-    [SerializeField]
-    ParticleSystem effects;
+    
     // Start is called before the first frame update
     void Awake()
     {
@@ -49,29 +51,25 @@ public class ColorMatrixController : MonoBehaviour
         state = ColorState.NATURAL;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void FixedUpdate()
     {
         if (state == ColorState.HOVER || state == ColorState.GROWTH && isChanging)
         {
             RaycastHit hit;
 
-            if (Physics.Raycast(transform.position, transform.TransformDirection(-Vector3.up), out hit, hoverDistance))
+            if (Physics.Raycast(transform.position, -Vector3.up, out hit, hoverDistance))
             {
                 float forceAmount = HooksLawDampen(hit.distance);
 
-                rigidBody.AddForceAtPosition(transform.up * forceAmount, transform.position);
+                rigidBody.AddForceAtPosition(Vector3.up * forceAmount, transform.position);
             }
             else
             {
                 lastHitDistance = hoverDistance * 1.1f;
             }
         }
+
+        effects.transform.up = Vector3.up;
     }
 
     private float HooksLawDampen(float hitDistance)
@@ -172,9 +170,9 @@ public class ColorMatrixController : MonoBehaviour
                             
                     }
                     break;
-                case (ColorState.THUNDER):
-                    main.startColor = Color.yellow;
-                    break;
+                //case (ColorState.THUNDER):
+                //    main.startColor = Color.yellow;
+                //    break;
                 case (ColorState.GROWTH):
                     main.startColor = Color.green;
                     state = incomingState;

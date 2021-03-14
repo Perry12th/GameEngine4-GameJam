@@ -25,11 +25,13 @@ public class MovementController : MonoBehaviour
 
     [Header("Character Controller")]
     CharacterController controller;
-
+    [SerializeField]
+    Vector3 startingPoint;
 
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
+        startingPoint = transform.position;
     }
 
     // Update is called once per frame
@@ -69,5 +71,20 @@ public class MovementController : MonoBehaviour
     void OnDrawGizmos()
     {
         Gizmos.color = Color.white;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Death"))
+        {
+            TeleportPlayer(startingPoint);
+        }
+    }
+
+    private void TeleportPlayer(Vector3 newPosition)
+    {
+        controller.enabled = false;
+        transform.position = newPosition;
+        controller.enabled = true;
     }
 }
