@@ -24,6 +24,10 @@ public class WeaponController : MonoBehaviour
     bool readyToFire;
     [SerializeField]
     float thunderForce;
+    [SerializeField]
+    AudioSource fireSound;
+    [SerializeField]
+    AudioSource switchSound;
 
     // Start is called before the first frame update
     void Awake()
@@ -38,7 +42,7 @@ public class WeaponController : MonoBehaviour
 
     public void OnFire(InputAction.CallbackContext value)
     { 
-        if (value.started && readyToFire)
+        if (value.started && readyToFire && isActiveAndEnabled)
         {
             StartCoroutine(Fire());
         }
@@ -48,7 +52,7 @@ public class WeaponController : MonoBehaviour
     private IEnumerator Fire()
     {
         readyToFire = false;
-
+        fireSound.Play();
         RaycastHit hit;
         if (Physics.Raycast(firePoint.transform.position, firePoint.transform.TransformDirection(Vector3.forward), out hit, fireRange, hittableItems))
         {
@@ -73,6 +77,7 @@ public class WeaponController : MonoBehaviour
     {
         if (value.started)
         {
+            switchSound.Play();
             weaponStateText.text = "GrowthMode";
             weaponStateText.color = Color.green;
             weaponMaterial.SetColor("_EmissionColor", Color.green);
@@ -84,6 +89,7 @@ public class WeaponController : MonoBehaviour
     {
         if (value.started)
         {
+            switchSound.Play();
             weaponStateText.text = "ShrinkMode";
             weaponStateText.color = Color.red;
             weaponMaterial.SetColor("_EmissionColor", Color.red);
@@ -95,6 +101,7 @@ public class WeaponController : MonoBehaviour
     {
         if (value.started)
         {
+            switchSound.Play();
             weaponStateText.text = "HoverMode";
             weaponStateText.color = Color.blue;
             weaponMaterial.SetColor("_EmissionColor", Color.blue);
@@ -106,6 +113,7 @@ public class WeaponController : MonoBehaviour
     {
         if (value.started)
         {
+            switchSound.Play();
             weaponStateText.text = "ThunderMode";
             weaponStateText.color = Color.yellow;
             weaponMaterial.SetColor("_EmissionColor", Color.yellow);
@@ -117,6 +125,7 @@ public class WeaponController : MonoBehaviour
     {
         if (value.started)
         {
+            switchSound.Play();
             weaponStateText.text = "NaturalMode";
             weaponStateText.color = Color.white;
             weaponMaterial.SetColor("_EmissionColor", Color.white);

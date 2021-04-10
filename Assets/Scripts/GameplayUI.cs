@@ -31,6 +31,14 @@ public class GameplayUI : MonoBehaviour
         gameplayUI.SetActive(true);
         isPaused = false;
     }
+    public void OnSave()
+    {
+        SaveManager.Instance.Save();
+    }
+    public void OnLoad()
+    {
+        SaveManager.Instance.Load();
+    }
     public void OnQuit()
     {
         SceneManager.LoadScene("IntroScene");

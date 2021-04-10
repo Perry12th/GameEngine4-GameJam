@@ -5,11 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class LiftController : MonoBehaviour
 {
+    [SerializeField]
+    Transform newSpawnTransform;
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            SceneManager.LoadScene("GameOverScene");
+            other.GetComponent<MovementController>().startingPoint = newSpawnTransform.position;
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class MovementController : MonoBehaviour
+public class MovementController : MonoBehaviour, ISaveable
 {
     [Header("Movement")]
     [SerializeField]
@@ -26,7 +26,11 @@ public class MovementController : MonoBehaviour
     [Header("Character Controller")]
     CharacterController controller;
     [SerializeField]
-    Vector3 startingPoint;
+    public Vector3 startingPoint;
+
+    [Header("SoundEffects")]
+    [SerializeField]
+    AudioSource jumpSound;
 
     private void Awake()
     {
@@ -34,6 +38,13 @@ public class MovementController : MonoBehaviour
         startingPoint = transform.position;
     }
 
+    private void Start()
+    {
+        if (SaveManager.Instance.LoadOnStart)
+        {
+            SaveManager.Instance.Save();
+        }
+    }
     // Update is called once per frame
     void Update()
     {
@@ -64,6 +75,7 @@ public class MovementController : MonoBehaviour
     {
         if (isGrounded && value.started)
         {
+            jumpSound.Play();
             velocity.y = Mathf.Sqrt(jumpHeight * -2.0f * playerGravity);
         }
     }
@@ -73,7 +85,7 @@ public class MovementController : MonoBehaviour
         Gizmos.color = Color.white;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Death"))
         {
@@ -86,5 +98,18 @@ public class MovementController : MonoBehaviour
         controller.enabled = false;
         transform.position = newPosition;
         controller.enabled = true;
+    }
+
+    public void Save()
+    {
+        PlayerPrefs.SetFloat("PositionX", startingPoint.x);
+        PlayerPrefs.SetFloat("PositionY", startingPoint.y);
+        PlayerPrefs.SetFloat("PositionZ", startingPoint.z);
+    }
+
+    public void Load()
+    {
+        TeleportPlayer(new Vector3(PlayerPrefs.GetFloat("PositionX"), PlayerPrefs.GetFloat("PositionY"), PlayerPrefs.GetFloat("PositionZ")));
+        startingPoint = transform.position;
     }
 }

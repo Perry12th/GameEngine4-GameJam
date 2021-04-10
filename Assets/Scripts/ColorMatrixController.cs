@@ -22,8 +22,7 @@ public class ColorMatrixController : MonoBehaviour
     [Header("MartixStats")]
     [SerializeField]
     float GrowthSizeRatio;
-    [SerializeField]
-    float TinySizeRatio;
+    public float TinySizeRatio { get; private set; } = 0.2f;
     [SerializeField]
     float hoverDistance;
     [SerializeField]
@@ -42,6 +41,7 @@ public class ColorMatrixController : MonoBehaviour
     bool isChanging;
     [SerializeField]
     ColorState state = ColorState.NATURAL;
+    private Transform spawnTransform;
     
     // Start is called before the first frame update
     void Awake()
@@ -49,6 +49,7 @@ public class ColorMatrixController : MonoBehaviour
         normalScale = transform.localScale;
         rigidBody = GetComponent<Rigidbody>();
         state = ColorState.NATURAL;
+        spawnTransform = transform;
     }
 
     public void FixedUpdate()
@@ -192,6 +193,16 @@ public class ColorMatrixController : MonoBehaviour
                     }
                     break;
             }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Death"))
+        {
+            transform.position = spawnTransform.position + new Vector3(0, 3, 0);
+            transform.rotation = spawnTransform.rotation;
+            ChangeColorMartix(ColorState.NATURAL);
         }
     }
 }

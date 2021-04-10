@@ -18,6 +18,8 @@ public class PickupController : MonoBehaviour
     GameObject crosshairUI;
     [SerializeField]
     LayerMask pickupLayer;
+    [SerializeField]
+    AudioSource pickSound;
     // Start is called before the first frame update
     void Start()
     {
@@ -48,6 +50,7 @@ public class PickupController : MonoBehaviour
                 if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, pickUpRange, pickupLayer))
                 {
                     PickupObject(hit.transform.gameObject);
+                    pickSound.Play();
                 }
             }
             else
